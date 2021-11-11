@@ -4,21 +4,17 @@ import java.util.List;
 import java.util.Scanner;
 
 
-import miniproject.shoppingcart.Product;
-import miniproject.shoppingcart.Products;
-import miniproject.shoppingcart.Cart;
-
 
 public class UI {
-	 Cart cart = new Cart();
-	  private int ch = 0;
-  
+
+    Cart cart = new Cart();
+    private int ch = 0;
+    
     public UI () {
         menu();
     }
     
-    public void Screen () {
-    	 System.out.println();
+    public void startScreen () {
         System.out.println("1. Display Store Products");
         System.out.println("2. Display Cart");
         System.out.println("0. Exit");
@@ -29,70 +25,89 @@ public class UI {
         System.out.println("2. Remove From Cart");
         System.out.println("0. Exit");
     }
-	private void showcart() {
-		cart.printCartItems();
-		System.out.println(" added");
-	}
+    
     public void menu () {
         do {
-            Screen();
+            startScreen();
             getUserInput();
-            switch (ch) {
-            case 1: 
-                displayStoreProducts();
-                storeProductsMenu();
-                getUserInput();
-                Choice2();
-                break;
-            case 2: System.out.println();
-            	     cart.printCartItems();
-                     break;
-                
-            default :break;}
-
-}while(ch != 0);
-}
-       
-
-
-
-	private void Choice2() { 
-        switch (ch) {
-        case 1:
-            addProductToCart();
-         
-            showcart();
             
-            break;
-	    default:break;}
-		
-	}
+            switch (ch) {
+                case 1: 
+                    displayStoreProducts();
+                    storeProductsMenu();
+                    getUserInput();
+                    Choice2();
+                    break;
+                case 2:
+                    showCart();
+                    storeProductsMenu();
+                    getUserInput();
+                    Choice2();
+                    break;
+                case 0:
+                    System.exit(0);
+                    break;
+                default:
+                    
+                    break;
+            }
+        } while (ch != 0);
+    }
 
-	private void addProductToCart() {
-		 System.out.print("Enter the product id:");
-		 int id = getUserInput();
-	        cart.addProductToCartByPid(id);      
-	    
-		
-	}
+    private void Choice2() {
+        switch (ch) {
+            case 1:
+                addProductToCart();
+                showCart();
+                break;
+            case 2:
+                removeProductFromCart();
+                break;
+            default:
+                
+                break;
+        }
+    }
 
-	private int getUserInput() {
-		   Scanner input = new Scanner (System.in);
-	        ch = Integer.parseInt(input.nextLine());
-	        return ch;
-		
-	}
-	 private void displayStoreProducts() {
-	        List<Product> products = new Products().getProducts();
-	        System.out.println("Product Name| Price| Stock");
-	        System.out.println();
-	        for (Product prod: products) {
-	            System.out.println(
-	                    prod.getId() + " . " +
-	                            prod.getPname() + " | " +
-	                            prod.getPrice() + " | " +
-	                            prod.getStock()
-	            );
-	            
-	        }System.out.println("\n");
-	 }}
+    private int getUserInput() throws NumberFormatException {
+        Scanner input = new Scanner (System.in);
+        ch = Integer.parseInt(input.nextLine());
+        return ch;
+    }
+   
+    private void displayStoreProducts() {
+        List<Product> products = new Products().getProducts();
+        System.out.println("Product Name| Price| Stock");
+        System.out.println();
+        for (Product prod: products) {
+            System.out.println(
+                    prod.getId() + " . " +
+                            prod.getPname() + " | " +
+                            prod.getPrice() + " | " +
+                            prod.getStock()
+            );
+            
+        }System.out.println("\n");
+    }
+
+    private void addProductToCart() {
+    	System.out.println("Enter the product id:");
+        int id = getUserInput();
+        cart.addProductToCartByPID(id); 
+        
+    }
+
+    private void showCart() {
+        cart.printCartItems();
+    }
+
+    private void removeProductFromCart() {
+       	System.out.println("Enter the product id:");
+        int id = getUserInput();
+        cart.removeProductByPID(id);
+    }
+}
+
+
+
+
