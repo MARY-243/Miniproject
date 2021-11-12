@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class UI {
 
     Cart cart = new Cart();
+    Scanner scan = new Scanner(System.in);
     private int ch = 0;
     
     public UI () {
@@ -23,6 +24,7 @@ public class UI {
     public void storeProductsMenu() {
         System.out.println("1. Add to Cart");
         System.out.println("2. Remove From Cart");
+        System.out.println("3. Total Price");
         System.out.println("0. Exit");
     }
     
@@ -45,7 +47,15 @@ public class UI {
                     Choice2();
                     break;
                 case 0:
-                    System.exit(0);
+                	System.out.println("Do you want to checkout? (yes/no): ");
+                	String  c=scan.next();
+                	if (c.equals("yes")) {
+                		showTotalPrice() ;
+                        System.out.println("Thank you for shopping with us!");
+
+                    } else {
+                        menu();
+                    }
                     break;
                 default:
                     
@@ -63,6 +73,19 @@ public class UI {
             case 2:
                 removeProductFromCart();
                 break;
+            case 3:
+            	showTotalPrice();
+                break;
+            case 0:
+            	System.out.println("Do you want to checkout? (yes/no): ");
+            	String  c=scan.next();
+            	if (c.equals("yes")) {
+            		showTotalPrice() ;
+                    System.out.println("Thank you for shopping with us!");
+
+                } else {
+                    menu();
+                }
             default:
                 
                 break;
@@ -106,8 +129,7 @@ public class UI {
         int id = getUserInput();
         cart.removeProductByPID(id);
     }
+private void showTotalPrice() {
+	cart.printTotal();
 }
-
-
-
-
+}

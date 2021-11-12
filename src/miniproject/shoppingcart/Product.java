@@ -2,8 +2,6 @@ package miniproject.shoppingcart;
 
 import java.util.Objects;
 
-
-
 public class Product {
 
     private Integer id;
@@ -11,7 +9,7 @@ public class Product {
     private Double price;
     private Integer stock;
 	private Integer quantity;
-	
+
     
     public Product () {       
     }
@@ -22,6 +20,7 @@ public class Product {
         this.price = price;
         this.stock = stock;
         this.quantity=quantity;
+       
     }
     public Integer getQuantity() {
     	
@@ -32,15 +31,10 @@ public class Product {
 		this.quantity = quantity;
 	}
 
-
-    public Integer addOne() {
-        return quantity = quantity + 1;
-    }
-
-    public Integer reduceOne() {
-        return quantity = quantity - 1;
-    }
     
+    public void setId(Integer id) {
+        this.id = id;
+    }   
 
 	public Integer getId() {
 		return id;
@@ -70,6 +64,15 @@ public class Product {
 	public void setStock(Integer stock) {
 		this.stock = stock;
 	}
+	
+    public Integer addOne() {
+	     return quantity = quantity + 1;
+	}
+
+	public Integer reduceOne() {
+	     return quantity = quantity - 1;
+	}
+	
 	 @Override
 	    public int hashCode() {
 	        int hash = 7;
@@ -81,7 +84,7 @@ public class Product {
 	        return hash;
 	    }
 
-	    @Override
+	  @Override
 	    public boolean equals(Object obj) {
 	        if (this == obj) {
 	            return true;
@@ -109,10 +112,7 @@ public class Product {
 	        return true;
 	    }
 
-	   
-	    public void setId(Integer id) {
-	        this.id = id;
-	    }   
+	
 	}
 
 

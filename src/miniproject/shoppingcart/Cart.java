@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 class Cart {
 
     List<Product> cartItems = new ArrayList<Product>();
+  
+    double sum=0;
+  
     
     public void addProductToCartByPID(int id) {
         Product product = getProductByProductID(id);
@@ -45,19 +49,37 @@ class Cart {
         decreaseByOne(prod);
         System.out.println("removed");    }
     
-
     void printCartItems() {
         for (Product prod: cartItems) {
             System.out.print(prod.getPname());
             System.out.print("|");
             System.out.print(prod.getQuantity());
             System.out.print("|");
-            System.out.println(prod.getPrice());
+            getPriceWithQuantity(prod);
+           
             
         }
     }
     
-
+    void printTotal() { 
+    	
+    	 totalPrice(cartItems);
+    	  
+    	  }
+    
+    public void getPriceWithQuantity(Product product) {	
+    	
+    	double  qprice=product.getPrice()*product.getQuantity();
+    	System.out.println(qprice);
+    
+    }
+    
+    public double getPriceWithQ(Product product) {
+	 
+	   double  qprice=product.getPrice()*product.getQuantity();
+       return qprice;
+    
+    }
 
     public void decreaseByOne(Product product) {
         
@@ -68,11 +90,22 @@ class Cart {
             if(qty == 0) {
                 cartItems.remove(product);
             }
-            }
+        }
         else {
                 cartItems.remove(product);
-            }
-    }}  
-        
+             }
+    }
+    
 
- 
+    public void totalPrice(List<Product> cartItems)    {  
+    	double totalPrice=0.0;
+        for (int j = 0; j<cartItems.size(); j++) {
+             
+        	 Product product=cartItems.get(j);
+        	 double Price =product.getQuantity() * product.getPrice();
+        	 totalPrice=totalPrice+Price;
+        	 
+		}
+        System.out.println( "Total Price: "+totalPrice);
+    }
+}
