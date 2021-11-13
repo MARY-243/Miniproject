@@ -2,11 +2,12 @@ package miniproject.shoppingcart;
 
 import java.util.Objects;
 
+
 public class Product {
 
     private Integer id;
     private String pname;
-    private Double price;
+    private Float price;
     private Integer stock;
 	private Integer quantity;
 
@@ -14,7 +15,7 @@ public class Product {
     public Product () {       
     }
     
-    public Product (Integer id, String pname, Double price, Integer stock,Integer quantity) {
+    public Product (Integer id, String pname, Float price, Integer stock,Integer quantity) {
         this.id = id;
         this.pname = pname;
         this.price = price;
@@ -31,10 +32,15 @@ public class Product {
 		this.quantity = quantity;
 	}
 
+
+    public Integer addOne() {
+        return quantity = quantity + 1;
+    }
+
+    public Integer reduceOne() {
+        return quantity = quantity - 1;
+    }
     
-    public void setId(Integer id) {
-        this.id = id;
-    }   
 
 	public Integer getId() {
 		return id;
@@ -49,11 +55,11 @@ public class Product {
 		this.pname = pname;
 	}
 
-	public Double getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 
@@ -64,56 +70,25 @@ public class Product {
 	public void setStock(Integer stock) {
 		this.stock = stock;
 	}
-	
-    public Integer addOne() {
-	     return quantity = quantity + 1;
+	 
+	@Override
+	public int hashCode() {
+	     return id;
 	}
-
-	public Integer reduceOne() {
-	     return quantity = quantity - 1;
-	}
-	
+	  
+	//Define the equality of two products.
 	 @Override
-	    public int hashCode() {
-	        int hash = 7;
-	        hash = 29 * hash + Objects.hashCode(this.id);
-	        hash = 29 * hash + Objects.hashCode(this.pname);
-	        hash = 29 * hash + Objects.hashCode(this.price);
-	        hash = 29 * hash + Objects.hashCode(this.stock);
-	     
-	        return hash;
-	    }
-
-	  @Override
-	    public boolean equals(Object obj) {
-	        if (this == obj) {
-	            return true;
-	        }
-	        if (obj == null) {
-	            return false;
-	        }
-	        if (getClass() != obj.getClass()) {
-	            return false;
-	        }
-	        final Product other = (Product) obj;
-	        if (!Objects.equals(this.pname, other.pname)) {
-	            return false;
-	        }
-	        if (!Objects.equals(this.id, other.id)) {
-	            return false;
-	        }
-	        if (!Objects.equals(this.price, other.price)) {
-	            return false;
-	        }
-	        if (!Objects.equals(this.stock, other.stock)) {
-	            return false;
-	        }
-	      
-	        return true;
-	    }
-
-	
-	}
+	 public boolean equals(Object obj) {
+		
+		 Product p=(Product) obj;
+	     return id==p.id;
+	}  
+	 
+	 public void setId(Integer id) {
+	        this.id = id;
+	}  
+	 
+}
 
 
   

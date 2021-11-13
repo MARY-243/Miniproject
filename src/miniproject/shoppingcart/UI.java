@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.Scanner;
 
 
-
-public class UI {
-
-    Cart cart = new Cart();
+public class UI extends Cart {
+   
     Scanner scan = new Scanner(System.in);
-    private int ch = 0;
+    public int ch = 0;
     
     public UI () {
+    	 
         menu();
+       
     }
     
     public void startScreen () {
@@ -24,11 +24,11 @@ public class UI {
     public void storeProductsMenu() {
         System.out.println("1. Add to Cart");
         System.out.println("2. Remove From Cart");
-        System.out.println("3. Total Price");
         System.out.println("0. Exit");
     }
     
     public void menu () {
+    	
         do {
             startScreen();
             getUserInput();
@@ -46,59 +46,56 @@ public class UI {
                     getUserInput();
                     Choice2();
                     break;
-                case 0:
+                case 0: 
                 	System.out.println("Do you want to checkout? (yes/no): ");
                 	String  c=scan.next();
                 	if (c.equals("yes")) {
-                		showTotalPrice() ;
-                        System.out.println("Thank you for shopping with us!");
-
-                    } else {
-                        menu();
-                    }
-                    break;
-                default:
-                    
-                    break;
-            }
+                		printCartItems();
+                		System.out.println("Thank you for shopping with us!");
+                	} else {
+                		menu();
+                	}
+              default:break;
+            } 
         } while (ch != 0);
     }
 
     private void Choice2() {
+    	
         switch (ch) {
             case 1:
-                addProductToCart();
-                showCart();
-                break;
+                	addProductToCart();
+                	showCart();
+                	break;
             case 2:
-                removeProductFromCart();
-                break;
-            case 3:
-            	showTotalPrice();
-                break;
+                	removeProductFromCart();
+                	break;
+           
             case 0:
-            	System.out.println("Do you want to checkout? (yes/no): ");
-            	String  c=scan.next();
-            	if (c.equals("yes")) {
-            		showTotalPrice() ;
-                    System.out.println("Thank you for shopping with us!");
-
-                } else {
-                    menu();
-                }
-            default:
-                
-                break;
-        }
+            		System.out.println("Do you want to checkout? (yes/no): ");
+            		String  c=scan.next();
+            		if (c.equals("yes")) {
+            			printCartItems();
+            			System.out.println("Thank you for shopping with us!");
+            		} 
+            		else {
+            			menu();
+            		}
+            		break;
+            		
+            default:break;
+            
+        }	
+       
     }
 
-    private int getUserInput() throws NumberFormatException {
+    public int getUserInput() throws NumberFormatException {
         Scanner input = new Scanner (System.in);
         ch = Integer.parseInt(input.nextLine());
         return ch;
     }
    
-    private void displayStoreProducts() {
+    public void displayStoreProducts() {
         List<Product> products = new Products().getProducts();
         System.out.println("Product Name| Price| Stock");
         System.out.println();
@@ -113,23 +110,20 @@ public class UI {
         }System.out.println("\n");
     }
 
-    private void addProductToCart() {
+    public void addProductToCart() {
     	System.out.println("Enter the product id:");
         int id = getUserInput();
-        cart.addProductToCartByPID(id); 
+        addProductToCartByPID(id); 
         
     }
-
-    private void showCart() {
-        cart.printCartItems();
+   public void showCart() {
+        printCartItems();
     }
 
-    private void removeProductFromCart() {
+    public void removeProductFromCart() {
        	System.out.println("Enter the product id:");
         int id = getUserInput();
-        cart.removeProductByPID(id);
+        removeProductByPID(id);
     }
-private void showTotalPrice() {
-	cart.printTotal();
-}
+ 
 }
