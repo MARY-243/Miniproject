@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Products {
+	
 	private final List<Product> products = new ArrayList<Product>();
 
     public Products () {
@@ -14,6 +15,7 @@ public class Products {
         return products;
     }
     
+    //method is used to add the products into a new ArrayList of type Product.
     public void storeItems() {
         String [] productNames = {"Headphones","TV","Laptop","Watch","SmartPhone","Keyboard","Speaker","Alexa","Mouse","Pendrive"};
         Float  [] productPrice = {999.00f,15500.00f,40200.00f,1800.00f,10050.00f,980.00f,799.00f,2999.00f,399.00f,359.00f};

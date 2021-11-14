@@ -1,14 +1,38 @@
 package miniproject.shoppingcart;
 
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 class Cart {
 
     List<Product> cartItems = new ArrayList<Product>();
-    public double totalPrice=0.0; 
-   
+    
+    float totalCost=0;
+    
+    // Set of all possible options for PaymentStatus. 
+    enum PaymentStatus{
+        DONE, DUE, PARTIAL
+    };
+    
+    //Payment Status of current Cart. 
+    private PaymentStatus status;
+    
+    // Payment Mode used by user.
+    private String paymentMode;
+    
+    //Amount Paid by user.
+    private Float paymentAmount=0F;
+    
+    //Date of payment.
+    private Date paymentDate;    
+    
+    // Total amount of ordered items. 
+    private Float totalAmount=0F;
+    
+    // Due amount after payment. 
+    private Float paymentDue=0F;
     
     //To check whether the product exists
     //if exists, it returns the product
@@ -25,13 +49,14 @@ class Cart {
         
     }
     
-    //Add to cart
+    //Method to add an item by it's id.
     public void addProductToCartByPID(int id) {
         Product product = getProductByProductID(id);
         addToCart(product);   
     }
    
     //Add to cart
+    //Increases the quantity while adding.
     private void addToCart(Product product) {
     	int idxPos = cartItems.indexOf(product);
     	if( idxPos != -1) {
@@ -42,15 +67,18 @@ class Cart {
         }
         
     }
-    //Remove the items from cart
+    
+    //Remove the items from cart by it's id.
     public void removeProductByPID(int id) {
+    	
         Product prod = getProductByProductID(id);
-        decreaseByOne(prod);
+        removeFromCart(prod);
+        
           }
-    
-    //Reduce the quantity by one
-    
-    public void decreaseByOne(Product product) {
+
+    //Decreases the quantity while removing.
+    //If quantity is zero, it removes from the cart.
+    public void removeFromCart(Product product) {
         
         int idxPos = cartItems.indexOf(product);
         if( idxPos != -1) {
@@ -66,50 +94,85 @@ class Cart {
                 System.out.println("It doesn't exist");
             }
     }
-    //To print the Cart
-    void printCartItems() {
-    	 System.out.println("==================================");
-         System.out.println("CART ITEMS:");        
-         System.out.println("==================================");
-        for (Product prod: cartItems) {
-        	System.out.println("PRODUCT ID: "+prod.getId());
-        	System.out.println("PRODUCT NAME: "+prod.getPname());
-        	System.out.println("PRODUCT PRICE: "+prod.getPrice());
-        	System.out.println("PRODUCT ORDER QTY: "+prod.getQuantity());
-        	System.out.print("TOTAL: ");
-        	getPriceWithQuantity(prod);
-        	}
-        	System.out.println("==================================");    
-            System.out.print("Net Total : ");
-            totalPrice(cartItems);
-            System.out.println();
-            System.out.println("==================================");        
-        }    
-              
-     //To print the total price of each item
-     public void getPriceWithQuantity(Product product) {
-    	 double  qprice=product.getPrice()*product.getQuantity();
-    	 System.out.println(qprice);
-    	 
-     	}
+      
+    /*
+     Method handles the Checkout process using different sub-operations like 
+     * Payment,
+     * Order Confirmation,
+     * Print Payment Summary,
+     * Empty cart after payment.     
+     */
+    public void checkout(){
+    	printCart();
+        handlePayment();    
+        confirmOrder();
+        printPaymentSummary();
+        emptyCart();//after confirmation of order empty the cart
+    }
     
+    // A method to handle the payment. 
+    public void handlePayment(){
+        paymentMode=JOptionPane.showInputDialog("Enter Payment Mode(Cash/Cheque): ");
+        paymentDate=new Date();//current date
+        paymentAmount=new Float(JOptionPane.showInputDialog("Enter Amount, Total Due is: "+totalAmount));  
+        paymentDue=totalAmount-paymentAmount;            
+    }
+    
+    // The method handles the order confirmation on the basis of payment made. 
+    public void confirmOrder(){
+        if(paymentDue==0.0){
+            status=PaymentStatus.DONE;
+        }else if(paymentDue>0.0 && paymentDue<totalAmount){
+            status=PaymentStatus.PARTIAL;
+        }else if(paymentAmount==0.0){
+            status=PaymentStatus.DUE;
+        }  
+        if(status==PaymentStatus.DONE || status==PaymentStatus.PARTIAL){
+           System.out.println("SUCCESS: Your order is confirmed and will be processed soon."); 
+        }else if(status==PaymentStatus.DUE){
+            System.out.println("FAILED: Your order is failed. No payment done."); 
+        }
+    }
+    
+    // The method Prints all the products from present Cart. 
+    public void printCart(){  
+    	totalAmount=0f;
+        System.out.println("==================================");
+        System.out.println("CART ITEMS:");        
+        System.out.println("==================================");
+        for (Product p : cartItems) {
+        	
+            System.out.println("PRODUCT ID: "+p.getId());
+            System.out.println("PRODUCT NAME: "+p.getPname());
+            System.out.println("PRODUCT PRICE: "+p.getPrice());
+            System.out.println("PRODUCT ORDER QTY: "+p.getQuantity());
+            System.out.print("TOTAL: ");
+            float  qprice=p.getPrice()*p.getQuantity();//Total price of each item with quantity.
+       	    System.out.println(qprice); 
+            totalAmount=totalAmount+qprice;//Total amount of all the items in the cart.
+            System.out.println();
+        }
+        System.out.println("==================================");
+        System.out.println("Net Total : "+totalAmount);
+        System.out.println("==================================");        
+    }   
+     
+    // The method prints the payment summary.
+    void printPaymentSummary(){
+        System.out.println();
+        System.out.println("PAYMENT SUMMARY: ");   
+        System.out.println("==================================");
+        System.out.println("TOTAL AMOUNT: "+totalAmount);
+        System.out.println("PAYMENT AMOUNT: "+paymentAmount);
+        System.out.println("PAYMENT DUE: "+paymentDue);
+        System.out.println("PAYMENT MODE: "+paymentMode);
+        System.out.println("PAYMENT DATE: "+paymentDate);        
+        System.out.println("PAYMENT STATUS: "+status);
+    }
 
-     public void totalPrice(List<Product> cartItems)    { 
-    	    List <Product> newList = new ArrayList<>();
-            newList.addAll(cartItems); 
 
-    	 totalPrice=0.0;
-	     for (int j = 0; j<cartItems.size(); j++) {
-	    	Product product=cartItems.get(j);
-	    	double Price =product.getQuantity() * product.getPrice();
-	    	totalPrice=totalPrice+Price;
-	    		
-	     }
-            System.out.println( "Total Price: "+totalPrice);
-
-}
    //After the confirmation of order, empty the cart
-     public void emptyCart(){        
+    public void emptyCart(){        
     	 cartItems.clear();
      	}
 }

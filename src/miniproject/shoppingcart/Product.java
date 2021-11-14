@@ -32,15 +32,15 @@ public class Product {
 		this.quantity = quantity;
 	}
 
-
+    //To increment the quantity of an item in the cart .
     public Integer addOne() {
         return quantity = quantity + 1;
     }
-
+    
+    //To decrement the quantity of an item in the cart .
     public Integer reduceOne() {
         return quantity = quantity - 1;
     }
-    
 
 	public Integer getId() {
 		return id;
