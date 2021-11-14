@@ -110,29 +110,6 @@ class Cart {
         emptyCart();//after confirmation of order empty the cart
     }
     
-    // A method to handle the payment. 
-    public void handlePayment(){
-        paymentMode=JOptionPane.showInputDialog("Enter Payment Mode(Cash/Cheque): ");
-        paymentDate=new Date();//current date
-        paymentAmount=new Float(JOptionPane.showInputDialog("Enter Amount, Total Due is: "+totalAmount));  
-        paymentDue=totalAmount-paymentAmount;            
-    }
-    
-    // The method handles the order confirmation on the basis of payment made. 
-    public void confirmOrder(){
-        if(paymentDue==0.0){
-            status=PaymentStatus.DONE;
-        }else if(paymentDue>0.0 && paymentDue<totalAmount){
-            status=PaymentStatus.PARTIAL;
-        }else if(paymentAmount==0.0){
-            status=PaymentStatus.DUE;
-        }  
-        if(status==PaymentStatus.DONE || status==PaymentStatus.PARTIAL){
-           System.out.println("SUCCESS: Your order is confirmed and will be processed soon."); 
-        }else if(status==PaymentStatus.DUE){
-            System.out.println("FAILED: Your order is failed. No payment done."); 
-        }
-    }
     
     // The method Prints all the products from present Cart. 
     public void printCart(){  
@@ -156,7 +133,33 @@ class Cart {
         System.out.println("Net Total : "+totalAmount);
         System.out.println("==================================");        
     }   
-     
+    
+    // A method to handle the payment. 
+    public void handlePayment(){
+        paymentMode=JOptionPane.showInputDialog("Enter Payment Mode(Cash/Cheque): ");
+        paymentDate=new Date();//current date
+        paymentAmount=new Float(JOptionPane.showInputDialog("Enter Amount, Total Due is: "+totalAmount));  
+        paymentDue=totalAmount-paymentAmount;            
+    }
+    
+    
+    // The method handles the order confirmation on the basis of payment made. 
+    public void confirmOrder(){
+        if(paymentDue==0.0){
+            status=PaymentStatus.DONE;
+        }else if(paymentDue>0.0 && paymentDue<totalAmount){
+            status=PaymentStatus.PARTIAL;
+        }else if(paymentAmount==0.0){
+            status=PaymentStatus.DUE;
+        }  
+        if(status==PaymentStatus.DONE || status==PaymentStatus.PARTIAL){
+           System.out.println("SUCCESS: Your order is confirmed and will be processed soon."); 
+        }else if(status==PaymentStatus.DUE){
+            System.out.println("FAILED: Your order is failed. No payment done."); 
+        }
+    }
+    
+   
     // The method prints the payment summary.
     void printPaymentSummary(){
         System.out.println();
